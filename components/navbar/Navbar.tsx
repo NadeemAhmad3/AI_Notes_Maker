@@ -9,6 +9,7 @@ const NAV_ITEMS = ["Studio", "Solutions", "Pricing", "Research"];
 
 export default function Navbar() {
   const headerRef = useRef<HTMLElement>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   // Spotlight State
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -58,7 +59,7 @@ export default function Navbar() {
       ref={headerRef}
       className="fixed top-0 left-0 w-full z-50 h-20
                  bg-white/80 backdrop-blur-xl border-b border-slate-200/60
-                 flex items-center justify-between px-6 md:px-10"
+                 flex items-center justify-between px-4 md:px-10"
     >
       {/* 1. Logo (Interactive Gradient) */}
       <div className="shrink-0">
@@ -101,8 +102,46 @@ export default function Navbar() {
         </ul>
       </nav>
 
+      {/* Mobile Menu Button */}
+      <button
+        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        className="md:hidden z-50 flex flex-col gap-1.5"
+        aria-label="Toggle menu"
+      >
+        <span className={`block w-6 h-0.5 bg-slate-900 transition-all duration-300 ${
+          mobileMenuOpen ? 'rotate-45 translate-y-2' : ''
+        }`}></span>
+        <span className={`block w-6 h-0.5 bg-slate-900 transition-all duration-300 ${
+          mobileMenuOpen ? 'opacity-0' : ''
+        }`}></span>
+        <span className={`block w-6 h-0.5 bg-slate-900 transition-all duration-300 ${
+          mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''
+        }`}></span>
+      </button>
+
+      {/* Mobile Menu Dropdown */}
+      {mobileMenuOpen && (
+        <div className="md:hidden absolute top-20 left-0 right-0 bg-white/95 backdrop-blur-xl border-b border-slate-200/60 shadow-lg animate-in fade-in slide-in-from-top-2">
+          <nav className="flex flex-col p-4 gap-2">
+            {NAV_ITEMS.map((item) => (
+              <Link
+                key={item}
+                href="#"
+                className="px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {item}
+              </Link>
+            ))}
+            <button className="px-4 py-3 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition-colors text-left">
+              Log in
+            </button>
+          </nav>
+        </div>
+      )}
+
       {/* 3. Actions */}
-      <div className="flex items-center gap-6">
+      <div className="hidden md:flex items-center gap-6">
         <button className="hidden lg:block text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">
           Log in
         </button>
