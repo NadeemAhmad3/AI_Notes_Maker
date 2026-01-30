@@ -1,5 +1,6 @@
 import Navbar from "@/components/navbar/Navbar";
 import Hero from "@/components/hero/hero";
+import HowItWorks from "@/components/how-it-works/HowItWorks";
 
 export default function HomePage() {
   return (
@@ -10,6 +11,7 @@ export default function HomePage() {
       <div className="pt-20">
         <Hero />
       </div>
+      <HowItWorks />
     </main>
   );
 }
