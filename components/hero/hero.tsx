@@ -84,7 +84,7 @@ export default function Hero() {
       {/* These elements float around the text like a disorganized desk organizing itself */}
       
       {/* 1. The Audio Player Widget (Top Left) */}
-      <div className="floating-element float-widget absolute top-[15%] left-[5%] md:left-[15%] z-10 hidden md:block">
+      <div className="floating-element float-widget absolute top-[15%] left-[5%] lg:left-[15%] z-10 hidden lg:block">
         <div className="bg-white p-4 rounded-2xl shadow-paper border border-slate-100 flex items-center gap-4 w-64 transform -rotate-6 transition-transform hover:rotate-0 hover:scale-105 duration-300">
            <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white">
              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
@@ -109,7 +109,7 @@ export default function Hero() {
       </div>
 
       {/* 3. The Smart Summary Note (Bottom Right) */}
-      <div className="floating-element float-widget absolute bottom-[20%] right-[5%] md:right-[15%] z-20">
+      <div className="floating-element float-widget absolute bottom-[20%] right-[5%] lg:right-[15%] z-20 hidden lg:block">
         <div className="bg-[#FFFFF0] p-6 rounded-sm shadow-paper border border-stone-200 w-64 transform rotate-3 transition-transform hover:rotate-0 duration-300 relative">
            {/* Pin */}
            <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-red-400 shadow-sm" />
@@ -129,13 +129,13 @@ export default function Hero() {
 
 
       {/* --- MAIN TYPOGRAPHY --- */}
-      <div className="relative z-10 text-center max-w-4xl px-4">
+      <div className="relative z-10 text-center max-w-4xl px-4 sm:px-6">
         
-        <p className="hero-char text-sm font-bold tracking-[0.2em] text-slate-400 uppercase mb-6">
+        <p className="hero-char text-xs sm:text-sm font-bold tracking-[0.2em] text-slate-400 uppercase mb-4 sm:mb-6">
           The New Standard for Students
         </p>
 
-        <h1 className="text-6xl md:text-8xl lg:text-9xl font-serif-display text-slate-900 leading-[0.9] tracking-tight mb-8">
+        <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-serif-display text-slate-900 leading-[0.9] tracking-tight mb-6 sm:mb-8">
           <span className="block hero-char">Dont just</span>
           <span className="hero-char relative inline-block">
             take notes.
@@ -144,20 +144,20 @@ export default function Hero() {
           </span>
         </h1>
 
-        <p className="hero-char text-lg md:text-xl text-slate-500 max-w-xl mx-auto font-medium leading-relaxed">
+        <p className="hero-char text-base sm:text-lg md:text-xl text-slate-500 max-w-2xl mx-auto font-medium leading-relaxed px-2">
           Record your lectures and let our AI turn messy audio into 
           <span className="text-slate-900 font-bold decoration-wavy underline decoration-slate-300 underline-offset-4 mx-1">structured knowledge</span> 
           instantly.
         </p>
 
         {/* --- CTA AREA --- */}
-        <div className="hero-char flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
+        <div className="hero-char flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-8 sm:mt-10 w-full px-2">
           
           {/* Primary Button - Minimalist Black */}
           <button 
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            className="group relative px-8 py-4 bg-slate-900 text-white rounded-full font-medium overflow-hidden transition-all hover:scale-105 active:scale-95"
+            className="group relative px-6 sm:px-8 py-3 sm:py-4 bg-slate-900 text-white rounded-full font-medium overflow-hidden transition-all hover:scale-105 active:scale-95 w-full sm:w-auto"
           >
             <span className="relative z-10 flex items-center gap-2">
               Start Recording
@@ -170,7 +170,7 @@ export default function Hero() {
           </button>
 
           {/* Secondary Button - Outline */}
-          <button className="px-8 py-4 rounded-full border border-slate-200 text-slate-600 font-medium hover:bg-white hover:border-slate-400 transition-colors bg-white/50">
+          <button className="px-6 sm:px-8 py-3 sm:py-4 rounded-full border border-slate-200 text-slate-600 font-medium hover:bg-white hover:border-slate-400 transition-colors bg-white/50 w-full sm:w-auto">
             See an Example
           </button>
         </div>
