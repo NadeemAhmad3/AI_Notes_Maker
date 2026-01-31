@@ -2,6 +2,7 @@ import Navbar from "@/components/navbar/Navbar";
 import Hero from "@/components/hero/hero";
 import SectionDivider from "@/components/SectionDivider";
 import HowItWorks from "@/components/how-it-works/HowItWorks";
+import LiveNotesPreview from "@/components/livenotespreview/LiveNotesPreview";
 
 export default function HomePage() {
   return (
@@ -16,6 +17,7 @@ export default function HomePage() {
         <SectionDivider />
       </div>
       <HowItWorks />
+      <LiveNotesPreview />
     </main>
   );
 }
