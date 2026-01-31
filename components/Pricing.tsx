@@ -151,7 +151,6 @@ export default function Pricing() {
           boardColor="bg-stone-300"
           paperColor="bg-white"
           btnStyle="bg-white border-2 border-stone-200 text-stone-600 hover:bg-stone-50"
-          isYearly={isYearly}
         />
 
         <ClipboardCard 
@@ -164,7 +163,6 @@ export default function Pricing() {
           paperColor="bg-[#FFFFF0]" 
           btnStyle="bg-slate-900 text-white hover:bg-slate-700 hover:scale-[1.02] shadow-xl"
           isBestValue={true}
-          isYearly={isYearly}
         />
 
         <ClipboardCard 
@@ -176,15 +174,11 @@ export default function Pricing() {
           boardColor="bg-stone-300"
           paperColor="bg-white"
           btnStyle="bg-white border-2 border-stone-200 text-stone-600 hover:bg-stone-50"
-          isYearly={isYearly}
         />
       </div>
     </section>
   );
 }
-
-
-
 // --- SUB-COMPONENT: The Physical Clipboard ---
 interface ClipboardCardProps {
   title: string;
@@ -196,10 +190,9 @@ interface ClipboardCardProps {
   paperColor: string;
   btnStyle: string;
   isBestValue?: boolean;
-  isYearly: boolean;
 }
 
-function ClipboardCard({ title, price, period, desc, features, boardColor, paperColor, btnStyle, isBestValue,isYearly }: ClipboardCardProps) {
+function ClipboardCard({ title, price, period, desc, features, boardColor, paperColor, btnStyle, isBestValue }: ClipboardCardProps) {
   
   // Animate price change
   const priceRef = useRef<HTMLSpanElement>(null);
