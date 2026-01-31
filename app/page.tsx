@@ -5,6 +5,7 @@ import HowItWorks from "@/components/how-it-works/HowItWorks";
 import LiveNotesPreview from "@/components/livenotespreview/LiveNotesPreview";
 import KnowledgeExports from "@/components/KnowledgeExports";
 import Pricing from "@/components/Pricing";
+import FinalCommitment from "@/components/FinalCommitment";
 
 export default function HomePage() {
   return (
@@ -22,6 +23,7 @@ export default function HomePage() {
       <LiveNotesPreview />
       <KnowledgeExports />
       <Pricing />
+      <FinalCommitment />
     </main>
   );
 }
