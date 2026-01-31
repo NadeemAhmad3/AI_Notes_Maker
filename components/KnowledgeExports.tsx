@@ -88,9 +88,8 @@ export default function KnowledgeExports() {
       {/* --- HEADING --- */}
       <div className="relative z-10 max-w-4xl mx-auto text-center mb-24 mt-12">
         <h2 className="font-serif-display text-4xl sm:text-5xl md:text-6xl text-slate-900 leading-tight">
-          Knowledge,{" "}
           <span ref={headingTriggerRef} className="relative inline-block px-2">
-            <span className="relative z-10">ready to use</span>
+            <span className="relative z-10"> Knowledge ready to use</span>
             {/* Highlighter */}
             <span className="ke-highlight-underline absolute bottom-2 left-0 w-full h-[0.35em] bg-yellow-300/60 -z-10 origin-left scale-x-0 rounded-sm" />
           </span>
