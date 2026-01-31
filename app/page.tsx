@@ -3,6 +3,7 @@ import Hero from "@/components/hero/hero";
 import SectionDivider from "@/components/SectionDivider";
 import HowItWorks from "@/components/how-it-works/HowItWorks";
 import LiveNotesPreview from "@/components/livenotespreview/LiveNotesPreview";
+import KnowledgeExports from "@/components/KnowledgeExports";
 
 export default function HomePage() {
   return (
@@ -18,6 +19,7 @@ export default function HomePage() {
       </div>
       <HowItWorks />
       <LiveNotesPreview />
+      <KnowledgeExports />
     </main>
   );
 }
