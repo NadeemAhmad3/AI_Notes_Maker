@@ -13,16 +13,22 @@ export default function HowItWorks() {
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline();
+      // Note: We don't need a timeline for independent elements unless they are sequenced.
+      // I've switched this to a direct gsap.to with its own ScrollTrigger.
 
-      // 0. Draw the Highlighter line on "understanding"
-      tl.to(".hiw-highlight-underline", {
+      // 0. HIGHLIGHTER ANIMATION (FIXED)
+      gsap.to(".hiw-highlight-underline", {
+        scrollTrigger: {
+          trigger: ".hiw-highlight-underline", // Start when the line (or its parent) enters view
+          start: "top 80%", // Activates when element is 80% down the screen
+          toggleActions: "play none none reverse", // Replays if you scroll up and down
+        },
         scaleX: 1,
         duration: 1.2,
         ease: "power3.inOut",
-      }, 0.2);
+      });
 
-      // 1. "The Desk Toss" - Cards slide in and rotate into their tilted positions
+      // 1. "The Desk Toss" - Cards slide in
       gsap.from(".premium-tilted-card", {
         scrollTrigger: {
           trigger: ".cards-container",
@@ -61,10 +67,14 @@ export default function HowItWorks() {
       {/* --- ORIGINAL HEADING STYLE --- */}
       <div className="max-w-3xl mx-auto text-center mb-20">
         <h2 className="font-serif-display text-4xl sm:text-5xl md:text-6xl text-slate-900 leading-tight">
-          From sound to{" "}
           <span className="relative inline-block">
-            understanding
-            <span className="hiw-highlight-underline absolute bottom-2 left-0 w-full h-[0.35em] bg-yellow-300/60 -z-10 origin-left scale-x-0 rounded-sm" />
+             From sound to understanding
+            {/* 
+                1. z-index removed as per your fix (defaulting to auto/0 is fine here inside relative parent)
+                2. origin-left ensures it grows from left to right 
+                3. scale-x-0 ensures it is invisible until GSAP animates it to 1
+            */}
+            <span className="hiw-highlight-underline absolute bottom-2 left-0 w-full h-[0.35em] bg-yellow-300/60 origin-left scale-x-0 rounded-sm" />
           </span>
         </h2>
         <p className="mt-6 text-slate-500 text-lg font-medium">
@@ -78,11 +88,9 @@ export default function HowItWorks() {
         {/* CARD 01 */}
         <div className="premium-tilted-card group relative cursor-pointer" 
              style={{ transform: 'rotate(-3deg)' }}>
-          {/* Paper Shadow Stack (Creates depth) */}
           <div className="absolute inset-0 bg-slate-200 translate-x-1 translate-y-1 rounded-sm -z-10" />
           
           <div className="relative bg-white border border-stone-200 shadow-paper p-8 h-full transition-all duration-500 group-hover:rotate-0 group-hover:-translate-y-4 group-hover:shadow-2xl">
-            {/* Binder Clip Detail */}
             <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-10 h-8 bg-slate-800 rounded-t-md flex items-center justify-center shadow-md">
                <div className="w-4 h-4 border-2 border-slate-400 rounded-full" />
             </div>
@@ -102,7 +110,6 @@ export default function HowItWorks() {
                 and emphasis — not just raw words.
               </p>
 
-              {/* Interactive Audio Visualizer */}
               <div className="mt-8 flex items-end gap-1 h-8">
                 {[0.4, 0.7, 0.3, 0.9, 0.5, 0.8, 0.4].map((h, i) => (
                   <div key={i} className="flex-1 bg-slate-200 group-hover:bg-slate-900 transition-colors" 
@@ -119,7 +126,6 @@ export default function HowItWorks() {
           <div className="absolute inset-0 bg-stone-200 translate-x-1 translate-y-1 rounded-sm -z-10" />
           
           <div className="relative bg-[#FFFFF5] border border-stone-200 shadow-paper p-8 h-full transition-all duration-500 group-hover:rotate-0 group-hover:-translate-y-4 group-hover:shadow-2xl">
-            {/* Ink Stain Accent */}
             <div className="absolute top-4 right-4 w-12 h-12 bg-emerald-500/5 rounded-full blur-xl group-hover:bg-emerald-500/10 transition-colors" />
 
             <div className="card-content-inner pt-4">
@@ -137,7 +143,6 @@ export default function HowItWorks() {
                 Concepts are separated from noise.
               </p>
 
-              {/* Intelligence Nodes */}
               <div className="mt-8 flex gap-3">
                 <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                 <div className="w-2 h-2 rounded-full bg-emerald-300 animate-pulse delay-75" />
@@ -153,7 +158,6 @@ export default function HowItWorks() {
           <div className="absolute inset-0 bg-slate-200 translate-x-1 translate-y-1 rounded-sm -z-10" />
           
           <div className="relative bg-white border border-stone-200 shadow-paper p-8 h-full transition-all duration-500 group-hover:rotate-0 group-hover:-translate-y-4 group-hover:shadow-2xl">
-            {/* Corner Fold Accent */}
             <div className="absolute top-0 right-0 w-8 h-8 bg-stone-50" style={{ clipPath: 'polygon(100% 0, 0 0, 100% 100%)' }} />
 
             <div className="card-content-inner pt-4">
@@ -171,7 +175,6 @@ export default function HowItWorks() {
                 revision-ready knowledge.
               </p>
 
-              {/* Tag Badges */}
               <div className="mt-8 flex gap-2">
                 <div className="px-2 py-1 bg-slate-50 border border-slate-100 rounded text-[9px] font-bold text-slate-400 group-hover:border-yellow-200 group-hover:text-yellow-700 transition-colors">SUMMARY.PDF</div>
                 <div className="px-2 py-1 bg-slate-50 border border-slate-100 rounded text-[9px] font-bold text-slate-400 group-hover:border-yellow-200 group-hover:text-yellow-700 transition-colors">QUIZ.DAT</div>
