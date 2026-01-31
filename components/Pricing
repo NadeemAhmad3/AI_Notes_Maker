@@ -141,6 +141,7 @@ export default function Pricing() {
 
       {/* --- CLIPBOARD PRICING GRID --- */}
       <div className="pricing-grid max-w-7xl mx-auto grid md:grid-cols-3 gap-12 lg:gap-16 items-start px-4">
+        {/* REMOVED isYearly prop from here */}
         <ClipboardCard 
           title="Audit"
           price={isYearly ? "0" : "0"}
@@ -150,9 +151,9 @@ export default function Pricing() {
           boardColor="bg-stone-300"
           paperColor="bg-white"
           btnStyle="bg-white border-2 border-stone-200 text-stone-600 hover:bg-stone-50"
-          isYearly={isYearly}
         />
 
+        {/* REMOVED isYearly prop from here */}
         <ClipboardCard 
           title="Scholar"
           price={isYearly ? "12" : "15"}
@@ -163,9 +164,9 @@ export default function Pricing() {
           paperColor="bg-[#FFFFF0]" 
           btnStyle="bg-slate-900 text-white hover:bg-slate-700 hover:scale-[1.02] shadow-xl"
           isBestValue={true}
-          isYearly={isYearly}
         />
 
+        {/* REMOVED isYearly prop from here */}
         <ClipboardCard 
           title="Study Group"
           price={isYearly ? "29" : "39"}
@@ -175,7 +176,6 @@ export default function Pricing() {
           boardColor="bg-stone-300"
           paperColor="bg-white"
           btnStyle="bg-white border-2 border-stone-200 text-stone-600 hover:bg-stone-50"
-          isYearly={isYearly}
         />
       </div>
     </section>
@@ -183,6 +183,7 @@ export default function Pricing() {
 }
 
 // --- SUB-COMPONENT: The Physical Clipboard ---
+// REMOVED isYearly from Interface (it was unused in the component logic)
 interface ClipboardCardProps {
   title: string;
   price: string;
@@ -193,7 +194,6 @@ interface ClipboardCardProps {
   paperColor: string;
   btnStyle: string;
   isBestValue?: boolean;
-  isYearly: boolean;
 }
 
 function ClipboardCard({ title, price, period, desc, features, boardColor, paperColor, btnStyle, isBestValue }: ClipboardCardProps) {
