@@ -1,0 +1,284 @@
+"use client";
+
+import { useLayoutEffect, useRef, useState, useEffect } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+export default function Pricing() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const headingTriggerRef = useRef<HTMLSpanElement>(null);
+  const [isYearly, setIsYearly] = useState(false);
+
+  // --- ANIMATIONS ---
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      
+      // 1. HIGHLIGHTER (Standard)
+      gsap.fromTo(".pricing-highlight-underline", 
+        { scaleX: 0, transformOrigin: "left center" },
+        {
+          scaleX: 1,
+          duration: 1.2,
+          ease: "power3.inOut",
+          scrollTrigger: {
+            trigger: headingTriggerRef.current,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          }
+        }
+      );
+
+      // 2. BARCODE SCANNER LASER
+      gsap.fromTo(".laser-line", 
+        { x: "-100%" },
+        {
+          x: "100%",
+          duration: 2,
+          ease: "power1.inOut",
+          repeat: -1,
+          yoyo: true,
+        }
+      );
+
+      // 3. CLIPBOARDS DROP IN
+      gsap.from(".clipboard-card", {
+        scrollTrigger: {
+          trigger: ".pricing-grid",
+          start: "top 75%",
+        },
+        y: -100, // Drop from top like hanging on a wall
+        opacity: 0,
+        rotate: "random(-5, 5)",
+        stagger: 0.2,
+        duration: 1.2,
+        ease: "elastic.out(1, 0.6)",
+      });
+
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section
+      ref={sectionRef}
+      className="relative py-32 px-4 sm:px-6 bg-[#FAFAF9] overflow-hidden"
+    >
+      {/* --- BACKGROUND GRID --- */}
+      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" 
+           style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '24px 24px' }} 
+      />
+
+      {/* --- STYLISH DIVIDER: "Barcode Scanner" --- */}
+      <div className="absolute top-0 left-0 w-full h-24 flex flex-col items-center justify-center overflow-hidden z-20 pointer-events-none opacity-60">
+        <div className="relative w-64 h-12 flex items-center justify-center bg-white border-x-2 border-stone-300">
+           {/* The Barcode Lines */}
+           <div className="w-full h-full" 
+                style={{ backgroundImage: 'repeating-linear-gradient(90deg, #000 0, #000 2px, transparent 2px, transparent 4px, #000 4px, #000 5px, transparent 5px, transparent 9px)' }} 
+           />
+           <div className="absolute bottom-0 text-[10px] font-mono tracking-[0.5em]">90210-PRICE-CHECK</div>
+           
+           {/* The Red Laser Line */}
+           <div className="laser-line absolute top-0 left-0 w-1 h-full bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.8)] z-10" />
+        </div>
+      </div>
+
+
+      {/* --- HEADING & TOGGLE --- */}
+      <div className="relative z-10 max-w-4xl mx-auto text-center mb-20 mt-10">
+        <h2 className="font-serif-display text-4xl sm:text-5xl md:text-6xl text-slate-900 leading-tight">
+          Invest in your{" "}
+          <span ref={headingTriggerRef} className="relative inline-block px-2">
+            <span className="relative z-10">grades</span>
+            {/* Highlighter */}
+            <span className="pricing-highlight-underline absolute bottom-2 left-0 w-full h-[0.35em] bg-yellow-300/60 -z-10 origin-left scale-x-0 rounded-sm" />
+          </span>
+        </h2>
+        
+        <p className="mt-6 text-slate-500 text-lg font-medium">
+          Cheaper than a textbook. Smarter than a tutor.
+        </p>
+
+        {/* --- PHYSICAL TOGGLE SWITCH --- */}
+        <div className="mt-10 flex items-center justify-center gap-4">
+          <span className={`text-sm font-bold tracking-widest uppercase transition-colors ${!isYearly ? "text-slate-900" : "text-slate-400"}`}>
+            Monthly
+          </span>
+          
+          <button 
+            onClick={() => setIsYearly(!isYearly)}
+            className="relative w-16 h-8 bg-slate-200 rounded-full shadow-inner p-1 transition-colors duration-300 hover:bg-slate-300 focus:outline-none"
+          >
+            {/* The Switch Knob */}
+            <div className={`w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 flex items-center justify-center ${isYearly ? "translate-x-8" : "translate-x-0"}`}>
+               {/* Grip lines on knob */}
+               <div className="flex gap-px">
+                 <div className="w-px h-3 bg-slate-300" />
+                 <div className="w-px h-3 bg-slate-300" />
+                 <div className="w-px h-3 bg-slate-300" />
+               </div>
+            </div>
+          </button>
+
+          <span className={`text-sm font-bold tracking-widest uppercase transition-colors ${isYearly ? "text-slate-900" : "text-slate-400"}`}>
+            Yearly <span className="text-emerald-500 text-[10px] ml-1">(-20%)</span>
+          </span>
+        </div>
+      </div>
+
+
+      {/* --- CLIPBOARD PRICING GRID --- */}
+      <div className="pricing-grid max-w-7xl mx-auto grid md:grid-cols-3 gap-12 lg:gap-16 items-start px-4">
+        
+        {/* 1. FREE PLAN (Standard Clipboard) */}
+        <ClipboardCard 
+          title="Audit"
+          price={isYearly ? "0" : "0"}
+          period="Forever"
+          desc="For casual note takers."
+          features={["3 Hours recording / mo", "Basic summaries", "Web access only", "7-day history"]}
+          boardColor="bg-stone-300"
+          paperColor="bg-white"
+          btnStyle="bg-white border-2 border-stone-200 text-stone-600 hover:bg-stone-50"
+          isYearly={isYearly}
+        />
+
+        {/* 2. PRO PLAN (Premium Black Clipboard) */}
+        <ClipboardCard 
+          title="Scholar"
+          price={isYearly ? "12" : "15"}
+          period={isYearly ? "/mo (billed yearly)" : "/mo"}
+          desc="The complete student toolkit."
+          features={["Unlimited recording", "Advanced AI Models", "PDF & Anki Exports", "Unlimited history", "Priority Support"]}
+          boardColor="bg-slate-800"
+          paperColor="bg-[#FFFFF0]" // Cream paper
+          btnStyle="bg-slate-900 text-white hover:bg-slate-700 hover:scale-[1.02] shadow-xl"
+          isBestValue={true}
+          isYearly={isYearly}
+        />
+
+        {/* 3. TEAM PLAN (Standard Clipboard) */}
+        <ClipboardCard 
+          title="Study Group"
+          price={isYearly ? "29" : "39"}
+          period={isYearly ? "/mo (billed yearly)" : "/mo"}
+          desc="Share notes with up to 5 friends."
+          features={["Everything in Scholar", "Shared workspaces", "Collaborative editing", "Role permissions", "Admin dashboard"]}
+          boardColor="bg-stone-300"
+          paperColor="bg-white"
+          btnStyle="bg-white border-2 border-stone-200 text-stone-600 hover:bg-stone-50"
+          isYearly={isYearly}
+        />
+
+      </div>
+    </section>
+  );
+}
+
+// --- SUB-COMPONENT: The Physical Clipboard ---
+interface ClipboardCardProps {
+  title: string;
+  price: string;
+  period: string;
+  desc: string;
+  features: string[];
+  boardColor: string;
+  paperColor: string;
+  btnStyle: string;
+  isBestValue?: boolean;
+  isYearly: boolean;
+}
+
+function ClipboardCard({ title, price, period, desc, features, boardColor, paperColor, btnStyle, isBestValue }: ClipboardCardProps) {
+  
+  // Animate price change
+  const priceRef = useRef<HTMLSpanElement>(null);
+  
+  useEffect(() => {
+    if(priceRef.current) {
+      gsap.from(priceRef.current, {
+        opacity: 0,
+        y: 10,
+        duration: 0.3,
+        ease: "power2.out"
+      });
+    }
+  }, [price]);
+
+  return (
+    <div className={`clipboard-card relative ${isBestValue ? 'z-10 md:-mt-8' : 'z-0'}`}>
+      
+      {/* 1. The Hanger (Visual Anchor) */}
+      <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full border-2 border-stone-300 bg-[#FAFAF9] z-0" />
+
+      {/* 2. The Board (Rigid Backing) */}
+      <div className={`relative ${boardColor} rounded-2xl p-2 pb-4 shadow-2xl transform transition-transform duration-500 hover:rotate-1 hover:scale-[1.01]`}>
+        
+        {/* The Metal Clip Mechanism (Top) */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-12 z-20 flex justify-center">
+           {/* Metal Plate */}
+           <div className="w-full h-full bg-linear-to-b from-stone-200 to-stone-400 rounded-t-lg shadow-md border-b-4 border-stone-500 flex items-end justify-center pb-2">
+             <div className="w-20 h-1 bg-stone-700 rounded-full opacity-20" />
+           </div>
+           {/* Spring Coil Visuals */}
+           <div className="absolute top-2 w-24 flex justify-between px-2">
+             <div className="w-1.5 h-3 bg-stone-600 rounded-full" />
+             <div className="w-1.5 h-3 bg-stone-600 rounded-full" />
+           </div>
+        </div>
+
+        {/* 3. The Paper (Content) */}
+        <div className={`relative ${paperColor} rounded-lg p-8 pt-12 shadow-paper min-h-125 flex flex-col items-center text-center`}>
+           
+           {/* Best Value Sticker/Tape */}
+           {isBestValue && (
+             <div className="absolute -right-3 top-10 rotate-12 bg-yellow-300 text-yellow-900 text-[10px] font-bold uppercase tracking-widest px-3 py-1 shadow-md border-l-2 border-r-2 border-dashed border-yellow-500/50" 
+                  style={{ clipPath: 'polygon(0% 0%, 100% 0%, 95% 100%, 5% 100%)' }}>
+               Most Popular
+             </div>
+           )}
+
+           <h3 className="font-serif-display text-2xl text-slate-800 mb-2">{title}</h3>
+           <p className="text-xs text-slate-500 font-medium mb-6">{desc}</p>
+           
+           {/* Price Area */}
+           <div className="flex items-baseline justify-center text-slate-900 mb-8 border-b-2 border-dashed border-slate-200 pb-8 w-full">
+             <span className="text-2xl font-serif-display mr-1">$</span>
+             <span ref={priceRef} className="text-6xl font-serif-display tracking-tight">{price}</span>
+             <span className="text-sm text-slate-400 font-medium ml-2">{period}</span>
+           </div>
+
+           {/* Features Checklist */}
+           <ul className="space-y-4 w-full text-left mb-8 flex-1">
+             {features.map((feat: string, i: number) => (
+               <li key={i} className="flex items-start gap-3 text-sm text-slate-600 font-medium group">
+                 <div className={`mt-0.5 w-4 h-4 rounded-full border border-slate-300 flex items-center justify-center shrink-0 ${isBestValue ? 'bg-emerald-100 border-emerald-200 text-emerald-600' : 'bg-slate-100 text-slate-400'}`}>
+                   <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                   </svg>
+                 </div>
+                 <span className="group-hover:text-slate-900 transition-colors">{feat}</span>
+               </li>
+             ))}
+           </ul>
+
+           {/* CTA Button (Signature Style) */}
+           <button className={`w-full py-4 rounded-xl font-bold tracking-wide transition-all ${btnStyle}`}>
+             {isBestValue ? "Get Started" : "Start Free"}
+           </button>
+           
+           {/* "Sign here" hint */}
+           <div className="mt-3 flex items-center gap-1 opacity-30">
+             <span className="text-[8px] uppercase tracking-widest">x</span>
+             <div className="h-px bg-slate-900 w-16" />
+           </div>
+
+        </div>
+      </div>
+    </div>
+  );
+}
