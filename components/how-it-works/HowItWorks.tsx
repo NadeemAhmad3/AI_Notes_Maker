@@ -13,6 +13,15 @@ export default function HowItWorks() {
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
+      const tl = gsap.timeline();
+
+      // 0. Draw the Highlighter line on "understanding"
+      tl.to(".hiw-highlight-underline", {
+        scaleX: 1,
+        duration: 1.2,
+        ease: "power3.inOut",
+      }, 0.2);
+
       // 1. "The Desk Toss" - Cards slide in and rotate into their tilted positions
       gsap.from(".premium-tilted-card", {
         scrollTrigger: {
@@ -55,7 +64,7 @@ export default function HowItWorks() {
           From sound to{" "}
           <span className="relative inline-block">
             understanding
-            <span className="hiw-highlight absolute bottom-2 left-0 w-full h-[0.35em] bg-yellow-300/60 -z-10 origin-left scale-x-100 rounded-sm" />
+            <span className="hiw-highlight-underline absolute bottom-2 left-0 w-full h-[0.35em] bg-yellow-300/60 -z-10 origin-left scale-x-0 rounded-sm" />
           </span>
         </h2>
         <p className="mt-6 text-slate-500 text-lg font-medium">
