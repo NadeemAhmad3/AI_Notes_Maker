@@ -109,7 +109,7 @@ export default function Hero() {
       </div>
 
       {/* 3. The Smart Summary Note (Bottom Right) */}
-      <div className="floating-element float-widget absolute bottom-[20%] right-[5%] lg:right-[15%] z-20 hidden lg:block">
+      <div className="floating-element float-widget absolute bottom-[20%] right-[-10%] lg:right-[5%] z-20 hidden lg:block">
         <div className="bg-[#FFFFF0] p-6 rounded-sm shadow-paper border border-stone-200 w-64 transform rotate-3 transition-transform hover:rotate-0 duration-300 relative">
            {/* Pin */}
            <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-red-400 shadow-sm" />
