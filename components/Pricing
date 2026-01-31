@@ -17,7 +17,7 @@ export default function Pricing() {
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       
-      // 1. HIGHLIGHTER (Standard)
+      // 1. HIGHLIGHTER
       gsap.fromTo(".pricing-highlight-underline", 
         { scaleX: 0, transformOrigin: "left center" },
         {
@@ -32,17 +32,13 @@ export default function Pricing() {
         }
       );
 
-      // 2. BARCODE SCANNER LASER
-      gsap.fromTo(".laser-line", 
-        { x: "-100%" },
-        {
-          x: "100%",
-          duration: 2,
-          ease: "power1.inOut",
-          repeat: -1,
-          yoyo: true,
-        }
-      );
+      // 2. RECEIPT MARQUEE (Infinite Scroll)
+      gsap.to(".receipt-text", {
+        xPercent: -50,
+        ease: "none",
+        duration: 25,
+        repeat: -1,
+      });
 
       // 3. CLIPBOARDS DROP IN
       gsap.from(".clipboard-card", {
@@ -50,7 +46,7 @@ export default function Pricing() {
           trigger: ".pricing-grid",
           start: "top 75%",
         },
-        y: -100, // Drop from top like hanging on a wall
+        y: -100,
         opacity: 0,
         rotate: "random(-5, 5)",
         stagger: 0.2,
@@ -73,28 +69,43 @@ export default function Pricing() {
            style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '24px 24px' }} 
       />
 
-      {/* --- STYLISH DIVIDER: "Barcode Scanner" --- */}
-      <div className="absolute top-0 left-0 w-full h-24 flex flex-col items-center justify-center overflow-hidden z-20 pointer-events-none opacity-60">
-        <div className="relative w-64 h-12 flex items-center justify-center bg-white border-x-2 border-stone-300">
-           {/* The Barcode Lines */}
-           <div className="w-full h-full" 
-                style={{ backgroundImage: 'repeating-linear-gradient(90deg, #000 0, #000 2px, transparent 2px, transparent 4px, #000 4px, #000 5px, transparent 5px, transparent 9px)' }} 
-           />
-           <div className="absolute bottom-0 text-[10px] font-mono tracking-[0.5em]">90210-PRICE-CHECK</div>
-           
-           {/* The Red Laser Line */}
-           <div className="laser-line absolute top-0 left-0 w-1 h-full bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.8)] z-10" />
+      {/* --- FULL WIDTH STYLISH DIVIDER: "Thermal Receipt" --- */}
+      <div className="absolute top-0 left-0 w-full z-20 transform rotate-1 -translate-y-1/2">
+        <div className="w-[110%] -ml-[5%] h-16 bg-white shadow-md border-y border-stone-200 flex items-center overflow-hidden relative">
+          
+          {/* Perforated Edge (Bottom) */}
+          <div className="absolute bottom-0 left-0 w-full h-1 opacity-20" 
+               style={{ backgroundImage: 'linear-gradient(90deg, transparent 50%, #000 50%)', backgroundSize: '8px 100%' }} />
+          
+          {/* Receipt Text Marquee */}
+          <div className="receipt-text flex whitespace-nowrap min-w-full font-mono text-xs font-bold tracking-[0.2em] text-stone-400 uppercase">
+             {[...Array(10)].map((_, i) => (
+                <span key={i} className="mx-8 flex items-center gap-6">
+                   <span>Order #7721-AI</span>
+                   <span className="text-stone-300">|</span>
+                   <span className="text-emerald-600">Save 20% on Annual</span>
+                   <span className="text-stone-300">|</span>
+                   <span>Item: Scholarship</span>
+                   <span className="text-stone-300">|</span>
+                   <span>Qty: 01</span>
+                   <span className="text-stone-300">***</span>
+                </span>
+             ))}
+          </div>
+
+          {/* Red "Paid" Stamp Style (Decorative) */}
+          <div className="absolute right-20 top-1/2 -translate-y-1/2 px-3 py-1 border-2 border-red-500/30 text-red-500/30 font-black rounded text-sm -rotate-12 select-none">
+            APPROVED
+          </div>
         </div>
       </div>
 
 
       {/* --- HEADING & TOGGLE --- */}
-      <div className="relative z-10 max-w-4xl mx-auto text-center mb-20 mt-10">
+      <div className="relative z-10 max-w-4xl mx-auto text-center mb-20 mt-16">
         <h2 className="font-serif-display text-4xl sm:text-5xl md:text-6xl text-slate-900 leading-tight">
-          Invest in your{" "}
           <span ref={headingTriggerRef} className="relative inline-block px-2">
-            <span className="relative z-10">grades</span>
-            {/* Highlighter */}
+            <span className="relative z-10"> Invest in your grades</span>
             <span className="pricing-highlight-underline absolute bottom-2 left-0 w-full h-[0.35em] bg-yellow-300/60 -z-10 origin-left scale-x-0 rounded-sm" />
           </span>
         </h2>
@@ -113,9 +124,7 @@ export default function Pricing() {
             onClick={() => setIsYearly(!isYearly)}
             className="relative w-16 h-8 bg-slate-200 rounded-full shadow-inner p-1 transition-colors duration-300 hover:bg-slate-300 focus:outline-none"
           >
-            {/* The Switch Knob */}
             <div className={`w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 flex items-center justify-center ${isYearly ? "translate-x-8" : "translate-x-0"}`}>
-               {/* Grip lines on knob */}
                <div className="flex gap-px">
                  <div className="w-px h-3 bg-slate-300" />
                  <div className="w-px h-3 bg-slate-300" />
@@ -130,11 +139,8 @@ export default function Pricing() {
         </div>
       </div>
 
-
       {/* --- CLIPBOARD PRICING GRID --- */}
       <div className="pricing-grid max-w-7xl mx-auto grid md:grid-cols-3 gap-12 lg:gap-16 items-start px-4">
-        
-        {/* 1. FREE PLAN (Standard Clipboard) */}
         <ClipboardCard 
           title="Audit"
           price={isYearly ? "0" : "0"}
@@ -147,7 +153,6 @@ export default function Pricing() {
           isYearly={isYearly}
         />
 
-        {/* 2. PRO PLAN (Premium Black Clipboard) */}
         <ClipboardCard 
           title="Scholar"
           price={isYearly ? "12" : "15"}
@@ -155,13 +160,12 @@ export default function Pricing() {
           desc="The complete student toolkit."
           features={["Unlimited recording", "Advanced AI Models", "PDF & Anki Exports", "Unlimited history", "Priority Support"]}
           boardColor="bg-slate-800"
-          paperColor="bg-[#FFFFF0]" // Cream paper
+          paperColor="bg-[#FFFFF0]" 
           btnStyle="bg-slate-900 text-white hover:bg-slate-700 hover:scale-[1.02] shadow-xl"
           isBestValue={true}
           isYearly={isYearly}
         />
 
-        {/* 3. TEAM PLAN (Standard Clipboard) */}
         <ClipboardCard 
           title="Study Group"
           price={isYearly ? "29" : "39"}
@@ -173,7 +177,6 @@ export default function Pricing() {
           btnStyle="bg-white border-2 border-stone-200 text-stone-600 hover:bg-stone-50"
           isYearly={isYearly}
         />
-
       </div>
     </section>
   );
